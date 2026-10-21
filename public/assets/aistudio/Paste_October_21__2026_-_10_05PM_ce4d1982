@@ -1,0 +1,1088 @@
+# MASTER PROMPT: STAT-Psych India — Complete UI/UX Transformation for Emergency Psychiatric Clinical Decision Support
+
+## ROLE AND OBJECTIVE
+
+Act as a senior product designer, clinical UX specialist, mobile-first interface architect, and expert frontend engineer.
+
+Continue working on the existing STAT-Psych India application. Improve its UI/UX directly in the current implementation.
+
+STAT-Psych India is a clinical decision-support application intended to help clinicians navigate psychiatric emergencies in Indian emergency departments, psychiatric casualty units, and acute-care settings.
+
+The application already contains clinical pathways, medication recommendations, dosing information, safety warnings, bedside assessments, patient-context modifiers, evidence references, triage tools, and clinical handover functionality.
+
+The primary problem is not a lack of information. It is the way the information is presented.
+
+The current experience is too dense, visually flat, text-heavy, and difficult to scan quickly. Important clinical actions compete with detailed rationale, study statistics, references, and supporting explanations. On mobile, this makes it unnecessarily difficult to identify the information that matters most.
+
+Your task is to transform the application into a polished, modern, clinically focused, highly readable emergency decision-support interface.
+
+**Implement the improvements directly in the existing application. Do not merely describe them, produce a mockup, or provide isolated code snippets.**
+
+Preserve the current architecture where practical, all existing clinical functionality, and all source clinical content.
+
+Do not rebuild the application from scratch unless a specific architectural limitation makes a targeted refactor necessary.
+
+---
+
+# PART 1 — DESIGN PHILOSOPHY
+
+The application must follow six fundamental principles.
+
+### 1. Action before explanation
+
+The initial view should prioritize what the clinician needs to do, not why a study supports it.
+
+Show the immediate clinical action, relevant dosing parameters, and critical safety restrictions prominently.
+
+Detailed explanations should remain available through deliberate user interaction.
+
+### 2. Progressive disclosure
+
+Do not display every piece of information simultaneously.
+
+Show essential information by default. Place detailed rationale, evidence comparisons, secondary explanations, and extended references inside expandable sections.
+
+Never hide information that is necessary to recognize an immediate danger or understand a critical treatment restriction.
+
+### 3. Clear visual hierarchy
+
+Every section should have a clear purpose and relative importance.
+
+Use typography, spacing, alignment, restrained colour, and component structure to distinguish primary actions from secondary information.
+
+Do not attempt to establish hierarchy by making everything bold, colourful, or enclosed in a card.
+
+### 4. Mobile-first emergency usability
+
+Design for clinicians using a phone in a time-critical environment.
+
+The interface must be readable at a glance, easy to operate with one hand where practical, and resistant to accidental taps, confusing navigation, and excessive scrolling.
+
+### 5. Clinical precision
+
+Improve the presentation without silently changing the medicine.
+
+Preserve medication names, doses, units, routes, timing, maximum doses, contraindications, evidence findings, citations, and clinical qualifications.
+
+### 6. Calm, professional visual design
+
+The application should feel like a carefully designed clinical instrument rather than a generic dashboard, a dense medical textbook, or an analytics platform.
+
+Prioritize clarity and usability over decoration.
+
+---
+
+# PART 2 — REDESIGN THE TREATMENT CARD FIRST
+
+This is the highest-priority component in the entire application.
+
+The current treatment recommendation combines clinical actions and supporting explanations into dense text. Replace that presentation with a structured, reusable treatment card.
+
+## 2.1 Card header
+
+Display:
+
+- The active syndrome or clinical pathway.
+- The selected tier or clinical presentation.
+- A concise treatment-section heading.
+- A status label such as Preferred option, Alternative, or Escalation option only when supported by the existing clinical data.
+
+Keep the header compact.
+
+Do not allow oversized titles or decorative banners to push the actual treatment below the fold.
+
+## 2.2 Immediate action
+
+Create a visually prominent section titled **Immediate action** or **Recommended action**.
+
+This section must communicate the actual clinical action in a concise, scannable format.
+
+Where the existing source information supports it, separate the content into:
+
+- Immediate non-pharmacological measures.
+- Medication or treatment option.
+- Dose.
+- Route.
+- Formulation.
+- Relevant prerequisites.
+- Alternative regimens.
+- Conditions determining which option applies.
+
+Do not display multiple treatment options as one long sentence.
+
+For example, if the existing recommendation contains an oral option and an intramuscular alternative, display them as clearly differentiated options with their respective instructions.
+
+Do not invent new treatment choices or infer a preferred option from presentation order alone.
+
+If the original content cannot safely be decomposed into separate fields, preserve the original instruction and identify it for later structured-data refinement.
+
+## 2.3 Dosing parameters
+
+Present the relevant dosing information in a compact, consistent layout.
+
+Depending on the selected pathway, this may include:
+
+- Dose and route.
+- Onset of action.
+- Repeat interval.
+- Maximum dose and its specified time period.
+- Monitoring interval.
+- Relevant route-specific restrictions.
+
+Use aligned information blocks, small descriptive labels, and readable values.
+
+Make numeric information easy to locate without turning the entire screen into a collection of oversized metric cards.
+
+Important distinctions must remain explicit:
+
+- An onset time is not a guaranteed response time.
+- A repeat interval is not an automatic instruction to repeat.
+- A maximum dose is not a recommended initial dose.
+- Alternative routes and formulations must not be treated as interchangeable.
+
+Do not add fields that imply unsupported clinical precision.
+
+## 2.4 Critical safety warning
+
+The safety warning must be visible in the default view.
+
+Create a dedicated warning component with:
+
+- An appropriate warning icon.
+- A clear heading.
+- The original warning text.
+- Any essential qualifications or restrictions.
+
+Use semantic colour sparingly:
+
+- Red or rose for serious contraindications and dangerous interactions.
+- Amber for cautions.
+- Neutral styling for routine information.
+- Teal for active navigation and primary interface actions.
+
+Do not use colour as the only indicator of severity.
+
+Do not hide a critical contraindication inside the rationale accordion.
+
+Do not reduce a warning to a vague phrase such as “Use with caution” if the source describes a specific dangerous interaction.
+
+The warning must remain visible when other parts of the treatment card are expanded or collapsed.
+
+## 2.5 Secondary treatment details
+
+Where the source contains additional information that is not required for the immediate decision, display it in a separate secondary section.
+
+Examples include:
+
+- Additional monitoring considerations.
+- Supporting clinical observations.
+- Relevant treatment caveats.
+- Secondary explanations.
+
+Do not duplicate the same information in multiple sections.
+
+Do not hide an urgent escalation instruction merely because it appears in a secondary part of the source data.
+
+---
+
+# PART 3 — IMPLEMENT THE EXPANDABLE RATIONALE SYSTEM
+
+This is a core requirement.
+
+**Every treatment recommendation that includes supporting rationale should display its rationale in a collapsed state by default.**
+
+The clinician should initially see the recommended action, dosing parameters, and critical safety restrictions.
+
+Add a clear disclosure control, for example:
+
+**Why this option? — View clinical rationale**
+
+Use a familiar chevron or disclosure icon to communicate whether the section is expanded.
+
+When clicked, the rationale should expand inline within the current treatment card.
+
+Do not navigate to another page or open a full-screen modal for ordinary rationale.
+
+Do not reset the selected pathway, bedside score, patient modifiers, or assessment state when the rationale is expanded or collapsed.
+
+## 3.1 Structure the expanded rationale
+
+The rationale must not simply reproduce the original long paragraph.
+
+Organize it into concise, meaningful sections when supported by the source:
+
+### Clinical reasoning
+
+Briefly explain why the treatment is relevant to the selected clinical presentation.
+
+### Key evidence
+
+Present the important evidence findings as concise bullet points.
+
+### Comparative outcomes
+
+Where the original content includes comparisons, identify the outcome, comparator, time point, and reported result clearly.
+
+### Interpretation
+
+Explain what the findings mean in the context described by the source, without overstating certainty.
+
+### Safety and limitations
+
+Show relevant adverse effects, limitations, qualifications, or uncertainties.
+
+### References
+
+Display the source citations in a consistent format. Make them clickable only when an actual valid destination exists.
+
+Not every rationale requires every subsection. Omit empty or irrelevant subsections rather than filling the interface with placeholder headings.
+
+## 3.2 Bullet-point formatting
+
+Replace long, dense explanatory paragraphs with concise, logically grouped bullet points where appropriate.
+
+Each bullet should communicate one meaningful finding or idea.
+
+Use selective bold emphasis for:
+
+- The main conclusion.
+- Important differences between treatment options.
+- Clinically meaningful numbers.
+- Significant safety considerations.
+- Important limitations.
+
+Keep supporting explanations in normal-weight text.
+
+Do not bold entire paragraphs.
+
+Do not convert every sentence into an independent bullet if that makes the content fragmented or difficult to understand.
+
+Use short paragraphs where a continuous explanation is clearer than a list.
+
+## 3.3 Present statistics responsibly
+
+Preserve existing trial statistics and comparative findings.
+
+Where the source provides the relevant information, clearly distinguish:
+
+- The outcome being measured.
+- The treatment and comparator.
+- The time point.
+- The numerical result.
+- The uncertainty or limitation.
+
+Do not display a percentage without enough context to interpret it.
+
+Do not invent sample sizes, confidence intervals, effect sizes, evidence grades, or statistical significance.
+
+Do not change a study-specific finding into a universal clinical claim.
+
+If the source lacks context needed to interpret a statistic, preserve the original information and flag the limitation for review.
+
+## 3.4 Accordion behaviour
+
+The rationale disclosure must:
+
+- Be collapsed by default.
+- Work with mouse, touch, and keyboard.
+- Expose the correct expanded state to assistive technology.
+- Preserve the current clinical selection.
+- Avoid unexpected scrolling or layout jumps.
+- Avoid excessive animation.
+- Respect reduced-motion preferences.
+- Use consistent behaviour throughout all pathways.
+
+If the application already has a preferred reusable component pattern, adapt it instead of introducing an unnecessary dependency.
+
+---
+
+# PART 4 — RESTRUCTURE THE VISUAL HIERARCHY
+
+The current interface gives too much visual weight to supporting text and too little distinction to the primary clinical action.
+
+Establish a consistent five-level hierarchy.
+
+## Level 1: Immediate clinical action
+
+The most visually prominent content within the selected pathway.
+
+## Level 2: Critical safety restrictions
+
+Serious contraindications, dangerous interactions, and urgent prerequisites.
+
+These must be highly visible without competing with the treatment instruction itself.
+
+## Level 3: Dosing and monitoring
+
+Dose, route, onset, repeat interval, maximum dose, monitoring, and related practical parameters.
+
+## Level 4: Assessment and escalation
+
+Bedside scoring, investigations, reassessment, monitoring, and escalation instructions.
+
+## Level 5: Supporting evidence
+
+Detailed rationale, trial statistics, comparisons, citations, and additional explanations.
+
+Use consistent typography, spacing, alignment, and semantic styling to distinguish these levels.
+
+Avoid:
+
+- Long paragraphs containing several distinct instructions.
+- Excessive uppercase text.
+- Repeated decorative headings.
+- Too many bordered cards.
+- Nested cards with multiple levels of padding.
+- Oversized empty banners.
+- Tiny text used to accommodate too much content.
+- Decorative badges for routine information.
+- Large blocks of monospaced prose.
+- Excessive shadows, gradients, and animations.
+
+The result should feel quieter and more organized, not simply more colourful.
+
+---
+
+# PART 5 — REDESIGN THE ENTIRE INFORMATION ARCHITECTURE
+
+Retain the existing functionality but organize it into a coherent clinical workflow.
+
+## 5.1 Assessment
+
+This includes:
+
+- Bedside medical stabilization.
+- Syndrome selection.
+- Patient-context modifiers.
+- Bedside scoring.
+- Symptom triage.
+
+## 5.2 Action
+
+This includes:
+
+- Selected clinical presentation.
+- Recommended treatment.
+- Dose and administration details.
+- Critical warnings.
+- Monitoring and reassessment.
+- Escalation instructions.
+
+## 5.3 Verification and documentation
+
+This includes:
+
+- Expandable rationale.
+- Evidence library.
+- Clinical references.
+- Handover note.
+
+These are functional groupings, not a requirement to create three separate pages.
+
+Prefer a coherent, responsive workflow that minimizes unnecessary navigation.
+
+On mobile, prioritize the active clinical pathway and its immediate action while retaining accessible navigation to other functions.
+
+Do not place essential medical stabilization instructions below the treatment recommendation if the clinical workflow requires those checks to occur first.
+
+---
+
+# PART 6 — IMPROVE SYNDROME AND TIER SELECTION
+
+Retain the existing syndrome pathways and selection functionality.
+
+## Syndrome selector
+
+Make the active syndrome unmistakable.
+
+Use:
+
+- A clear syndrome name.
+- A short descriptive subtitle.
+- A visible selected state.
+- Consistent spacing.
+- Accessible interaction feedback.
+
+Keep the syndrome name more prominent than its numeric identifier.
+
+Avoid long descriptions that make the navigation difficult to scan.
+
+On mobile, use an appropriate compact selector, horizontal scrolling control, searchable selection panel, or another suitable responsive pattern.
+
+Do not force a desktop sidebar into a narrow screen.
+
+Do not remove existing pathways or make them inaccessible to simplify the layout.
+
+## Tier selector
+
+Present each available tier as a compact selection card.
+
+Each card should show:
+
+- Tier identifier.
+- Short clinical title.
+- Brief presentation description.
+- Clear selected state.
+
+Do not place the entire treatment recommendation or its supporting rationale inside the selection card.
+
+The purpose of the selector is to identify the relevant presentation, not duplicate the complete protocol.
+
+When a tier changes, ensure the treatment card, warnings, dosing parameters, rationale, scoring context, and handover content update appropriately.
+
+Preserve unrelated patient assessment data when appropriate, but clear or reinitialize state only when required to prevent incorrect carryover between clinically distinct pathways.
+
+---
+
+# PART 7 — REDESIGN THE MEDICAL STABILIZATION CHECKLIST
+
+Retain the existing stabilization workflow and its clinically relevant content.
+
+Make it compact, prominent, and easy to use.
+
+The checklist should have:
+
+- A clear heading.
+- A concise explanation of its purpose.
+- Visible progress.
+- Readable item labels.
+- Short supporting descriptions.
+- Accessible controls.
+- Unambiguous assessment states.
+
+Where the data model supports it, distinguish:
+
+1. Not assessed.
+2. Assessed with no abnormality identified.
+3. Abnormal finding identified.
+
+Do not introduce a new state model without implementing its logic consistently throughout the application.
+
+If the existing implementation only records a binary checked state, preserve its meaning until the underlying assessment model is appropriately updated.
+
+A completed checklist must not imply that every medical cause has been excluded or that treatment is automatically safe.
+
+Provide clear feedback for outstanding assessments without turning the entire checklist into a dominant warning panel.
+
+Keep reset functionality available but less visually prominent than the primary clinical action.
+
+Confirm before clearing meaningful clinical selections or assessment data.
+
+---
+
+# PART 8 — IMPROVE PATIENT-CONTEXT MODIFIERS
+
+Retain the existing modifiers, including those relating to:
+
+- Age and frailty.
+- Hepatic impairment.
+- Renal impairment.
+- Cardiac disease and QTc concerns.
+- Concurrent CNS depressants.
+- Pregnancy and peripartum status.
+
+Use compact, accessible selection controls with clearly differentiated active states.
+
+Keep the selected context visible without allowing the modifier bar to consume excessive vertical space.
+
+Where the existing application already implements a relationship between a modifier and a clinical restriction, make that relationship visible.
+
+Do not invent new dosing adjustments or automatically infer contraindications that are not supported by the existing clinical logic.
+
+If a modifier requires additional assessment but the application cannot reliably determine its implications, clearly indicate that clinician review is needed.
+
+When a modifier is selected or deselected:
+
+- Preserve the selection correctly.
+- Update only the relevant interface state.
+- Avoid unnecessary full-page rerendering.
+- Do not silently change the recommended regimen without an existing, validated rule.
+- Keep any relevant safety restriction visible.
+
+Provide a predictable reset flow with appropriate confirmation.
+
+---
+
+# PART 9 — IMPROVE BEDSIDE SCORING
+
+Retain all existing bedside scoring tools and their supported items.
+
+Improve readability by:
+
+- Grouping related items.
+- Using clearly selectable controls.
+- Distinguishing selected and unselected states.
+- Keeping the current score easy to find.
+- Showing the scale's interpretation only when supported by the source.
+- Providing concise explanatory text where helpful.
+
+Do not invent thresholds, diagnoses, risk categories, or treatment decisions.
+
+Do not allow the score to imply more certainty than the underlying instrument supports.
+
+Changing a scoring item should update the score without causing the entire page to flicker, lose focus, reset the active tier, or scroll unexpectedly.
+
+Ensure that a pathway change cannot accidentally reuse a score from an unrelated clinical instrument.
+
+---
+
+# PART 10 — REDESIGN MONITORING AND ESCALATION
+
+Retain the existing clinical lifecycle and escalation content.
+
+Present the stages as a clear sequence using a stepper, numbered sections, or a similarly compact structure.
+
+Each stage should contain:
+
+- Stage number.
+- Concise heading.
+- Clear action summary.
+- Supporting instructions where necessary.
+
+Use bullet points for multiple distinct actions.
+
+Distinguish routine monitoring from urgent escalation using semantic styling supported by the original content.
+
+Keep important time-sensitive instructions easy to locate.
+
+Do not hide emergency escalation instructions in a secondary accordion merely to reduce visual density.
+
+Ensure that the workflow remains readable on mobile and does not become a series of excessively tall cards.
+
+---
+
+# PART 11 — MOBILE-FIRST RESPONSIVE DESIGN
+
+Mobile usability is a primary requirement, not a secondary adaptation of desktop design.
+
+Design for narrow screens first, then progressively enhance the layout for tablets and desktops.
+
+## Mobile priorities
+
+The interface should provide a clear route through:
+
+1. Compact application header.
+2. Medical stabilization status and relevant patient context.
+3. Active syndrome and selected tier.
+4. Immediate clinical action.
+5. Critical safety warning.
+6. Dosing and monitoring parameters.
+7. Expandable rationale.
+8. Bedside scoring and remaining workflow.
+9. Evidence and handover utilities.
+
+This ordering must remain subordinate to clinical prerequisites. Do not visually suggest that treatment should precede required stabilization or urgent assessment.
+
+## Responsive requirements
+
+- Avoid horizontal overflow.
+- Prevent clipped medication names and clinical text.
+- Allow long content to wrap naturally.
+- Use a single-column layout for the main treatment card on narrow screens.
+- Use compact two-column layouts for secondary metadata only when readable.
+- Avoid nested scrollable regions unless genuinely necessary.
+- Ensure sticky headers do not obscure content.
+- Keep primary controls accessible.
+- Avoid excessive vertical padding.
+- Reduce unnecessary scrolling without compressing text.
+- Preserve comfortable touch targets of approximately 44 × 44 CSS pixels where practical.
+- Maintain adequate spacing between potentially consequential controls.
+- Ensure dialogs fit within the viewport and can be dismissed predictably.
+- Respect device safe areas where relevant.
+
+Test at approximately 320, 360, 390, 430, 768, 1024, and 1440 CSS pixels.
+
+Do not solve small-screen problems by hiding essential safety information or making clinical text excessively small.
+
+---
+
+# PART 12 — VISUAL DESIGN SYSTEM
+
+Create a coherent, reusable design system throughout the application.
+
+## Overall appearance
+
+Aim for a calm, precise, professional clinical interface.
+
+Retain the established teal identity, but use it primarily for:
+
+- Primary interface actions.
+- Active navigation.
+- Selected states.
+- Interactive links.
+- Subtle section accents.
+
+Use neutral surfaces for ordinary information.
+
+Reserve warning colours for genuine clinical hazards.
+
+Avoid:
+
+- Excessive gradients.
+- Glassmorphism.
+- Decorative background patterns.
+- Oversized rounded cards.
+- Excessive shadows.
+- Unnecessary animations.
+- A separate accent colour for every section.
+- Large decorative icons.
+- Badges for information that does not require a badge.
+
+## Typography
+
+Use a readable sans-serif typeface with a consistent hierarchy.
+
+Suggested starting sizes:
+
+- Main syndrome heading: 22–26 px.
+- Treatment heading: 18–22 px.
+- Section headings: 15–17 px.
+- Main body text: 14–16 px.
+- Secondary metadata: 12–13 px.
+
+Adjust these as necessary for the actual design.
+
+Maintain comfortable line height and paragraph spacing.
+
+Use monospaced text only where it genuinely improves numeric alignment or identification of protocol codes.
+
+Do not use monospaced typography for long clinical explanations.
+
+## Spacing and layout
+
+Define a consistent spacing scale.
+
+Use spacing to establish relationships between:
+
+- Headings and content.
+- Treatment options.
+- Warnings and routine information.
+- Primary and secondary actions.
+- Rationale subsections.
+- Separate clinical workflow stages.
+
+Use a limited set of reusable component patterns.
+
+Do not create a bordered card around every sentence.
+
+## Light and dark themes
+
+Preserve the existing theme-switching functionality.
+
+Ensure that both themes provide:
+
+- Readable text.
+- Sufficient contrast.
+- Consistent selected states.
+- Clear warning semantics.
+- Visible focus indicators.
+- Readable borders and dividers.
+- Consistent disabled states.
+
+Avoid hard-coded colours that become unreadable when the theme changes.
+
+---
+
+# PART 13 — TRIAGE, EVIDENCE, AND HANDOVER
+
+## 13.1 Symptom triage
+
+Retain the existing triage function.
+
+Present each differential pattern as a separate, scannable item with:
+
+- Key identifying features.
+- The interpretation stated in the existing content.
+- The relevant pathway or reference, where available.
+
+Do not turn a suggestive clinical pattern into a definitive diagnosis unless the original content explicitly supports that interpretation.
+
+## 13.2 Evidence library
+
+Retain and improve the existing evidence library.
+
+Display available information in a consistent hierarchy:
+
+- Guideline or source name.
+- Publication year.
+- Study or document title.
+- Study design, when available.
+- Main reported finding.
+- Relevant limitations.
+- Link to the original source, when an actual URL exists.
+
+Keep references easy to open and read.
+
+Do not invent citations, publication details, source URLs, or study metadata.
+
+Do not allow evidence content to dominate the initial treatment view.
+
+## 13.3 Handover note
+
+Retain the current structured handover functionality.
+
+Ensure that the generated note remains synchronized with the selected syndrome and tier.
+
+Where supported by the existing data, organize it into:
+
+- Clinical presentation.
+- Assessment findings.
+- Recorded stabilization checks.
+- Patient-context modifiers.
+- Selected treatment.
+- Dose, route, and timing.
+- Critical safety restrictions.
+- Monitoring.
+- Escalation and follow-up.
+
+Only include information supported by the application state.
+
+Do not mark an unchecked assessment as normal.
+
+Do not represent a proposed intervention as already administered.
+
+Do not represent missing information as a negative finding.
+
+Preserve the ability to copy or otherwise use the generated note, and make the final output readable in a clinical handover context.
+
+---
+
+# PART 14 — ENGINEERING AND STATE MANAGEMENT
+
+Implement the redesign in the existing application.
+
+Preserve the current deployment approach and standalone HTML compatibility where applicable.
+
+Do not introduce unnecessary dependencies or a new build system unless technically required.
+
+Refactor the existing data and rendering architecture where necessary to support the new design.
+
+## Structured clinical data
+
+Where practical, separate clinical data from presentation.
+
+The existing application uses text-oriented fields such as `firstLine`, `pearls`, and `avoid`.
+
+Gradually introduce structured fields for:
+
+- Immediate action.
+- Treatment options.
+- Medication name.
+- Dose.
+- Route.
+- Formulation.
+- Timing.
+- Repeat interval.
+- Maximum dose and time period.
+- Contraindications.
+- Supporting rationale.
+- Evidence findings.
+- References.
+- Monitoring.
+- Escalation.
+
+Do not parse arbitrary clinical prose into medication instructions using brittle regular expressions.
+
+Do not fabricate structured values that are absent from the source.
+
+Where safe restructuring is not possible, retain the original instruction faithfully and flag it for manual refinement.
+
+Use shared rendering functions or components so that all clinical pathways receive the same visual improvements.
+
+## Rendering and state
+
+Inspect whether full-page rerendering can be reduced.
+
+Preserve:
+
+- Selected syndrome.
+- Selected tier.
+- Patient-context modifiers.
+- Bedside assessment data.
+- Scoring state.
+- Expanded or collapsed rationale state.
+- Relevant scroll position.
+- Keyboard focus where possible.
+
+Do not clear state simply because an accordion opens or a component changes.
+
+Ensure that state does not leak incorrectly between unrelated clinical pathways.
+
+Avoid flicker, unnecessary layout shifts, and unexpected scrolling.
+
+## Safe rendering
+
+Review the use of dynamic HTML rendering.
+
+Use safe DOM APIs, appropriate escaping, and safe rendering patterns for clinical content, labels, and reference metadata.
+
+Do not allow untrusted text or URLs to introduce HTML injection or script execution risks.
+
+Validate external link destinations appropriately.
+
+Keep the implementation maintainable and easy to extend when new pathways are added.
+
+## Preserve existing functionality
+
+Do not break:
+
+- Syndrome selection.
+- Tier selection.
+- Stabilization checklist.
+- Patient-context modifiers.
+- Bedside scoring.
+- Triage.
+- Evidence library.
+- Handover generation.
+- Theme switching.
+- Reset behavior.
+- APK download.
+- Existing navigation.
+
+All controls must perform their intended actions.
+
+A visual redesign that breaks existing interactions is not an acceptable result.
+
+---
+
+# PART 15 — ACCESSIBILITY AND CLINICAL INTERACTION SAFETY
+
+Implement semantic HTML and accessible interactions.
+
+- Use buttons for actions and links for navigation.
+- Make accordions keyboard accessible.
+- Expose expanded states appropriately.
+- Provide visible keyboard focus.
+- Give icon-only controls accessible labels.
+- Maintain sufficient colour contrast.
+- Do not rely on colour alone.
+- Support reduced-motion preferences.
+- Keep text readable at browser zoom levels.
+- Ensure modals have appropriate focus handling.
+- Allow keyboard dismissal where appropriate.
+- Preserve focus after dynamic updates.
+- Avoid unexpected page movement.
+- Ensure interactive elements are large enough for touch.
+- Use descriptive labels rather than ambiguous icons alone.
+
+Do not add decorative interaction patterns that interfere with rapid clinical use.
+
+---
+
+# PART 16 — CLINICAL CONTENT INTEGRITY
+
+This section is mandatory and takes precedence over visual simplification.
+
+The task is to improve UI/UX, not independently rewrite the clinical protocols.
+
+Do not silently change:
+
+- Medication names.
+- Dose values.
+- Units.
+- Routes.
+- Formulations.
+- Repeat intervals.
+- Maximum doses.
+- Contraindications.
+- Drug-interaction warnings.
+- Monitoring instructions.
+- Escalation thresholds.
+- Diagnostic criteria.
+- Trial statistics.
+- Evidence references.
+- Clinical qualifications.
+- Legal or regulatory statements.
+
+Do not delete a clinically important instruction simply because it makes the interface crowded.
+
+Instead, move supporting details into a suitable expandable section while retaining essential actions and warnings in the default view.
+
+Do not invent medical recommendations or make unsupported clinical decisions.
+
+If the existing content appears inconsistent, incomplete, or potentially unsafe:
+
+1. Preserve it during the UI/UX refactor.
+2. Identify the specific issue.
+3. Explain why it requires separate review.
+4. Do not silently replace it with a new clinical recommendation.
+
+Do not imply that the application independently establishes a diagnosis or replaces clinician judgment.
+
+Do not introduce automated treatment selection, modifier-based dosing, or new clinical decision logic unless that functionality already exists or has been separately specified and appropriately validated.
+
+The final interface should improve the delivery of clinical information without misrepresenting the certainty, scope, or meaning of that information.
+
+---
+
+# PART 17 — VALIDATION AND TESTING
+
+After implementing the redesign, test the actual running application.
+
+Do not stop when the code appears correct.
+
+## Test every pathway
+
+Test the complete set of existing syndromes and their available tiers, including representative pathways such as:
+
+- Acute agitation.
+- Catatonia.
+- Neuroleptic malignant syndrome.
+
+Do not assume that testing these examples covers every pathway or data structure.
+
+For each pathway:
+
+1. Select the syndrome.
+2. Select every available tier.
+3. Confirm that the correct clinical content is displayed.
+4. Confirm that doses, units, routes, and timing are preserved.
+5. Expand the rationale.
+6. Collapse the rationale.
+7. Verify that critical warnings remain visible.
+8. Change relevant patient-context modifiers.
+9. Test the stabilization checklist.
+10. Test bedside scoring.
+11. Open and close triage.
+12. Open and close the evidence library.
+13. Generate and verify a handover note.
+14. Switch between light and dark themes.
+15. Test reset behavior.
+16. Confirm that no unrelated state is incorrectly retained.
+17. Check for console errors and broken interactions.
+
+## Responsive testing
+
+Inspect the rendered application at:
+
+- 320 px.
+- 360 px.
+- 390 px.
+- 430 px.
+- 768 px.
+- 1024 px.
+- 1440 px.
+
+Look specifically for:
+
+- Horizontal overflow.
+- Clipped medication names.
+- Overlapping controls.
+- Excessive vertical spacing.
+- Tiny text.
+- Broken cards.
+- Unreadable warning panels.
+- Sticky headers obscuring content.
+- Accordions causing unwanted page jumps.
+- Bottom navigation covering controls.
+- Dark-mode contrast problems.
+
+Use available browser preview or screenshot tooling to inspect the actual rendering and correct visible issues.
+
+If a particular test cannot be performed, report the limitation rather than claiming that it passed.
+
+---
+
+# PART 18 — ACCEPTANCE CRITERIA
+
+The redesign is complete only when the following requirements are satisfied.
+
+### Information hierarchy
+
+- The main treatment action is immediately identifiable.
+- The treatment is no longer presented as a dense paragraph.
+- Dosing information is clearly separated into readable fields where supported.
+- Critical warnings remain visible.
+- The rationale is collapsed by default.
+- Expanded rationale uses structured, scannable content.
+- Supporting evidence is accessible without dominating the initial screen.
+
+### Clinical usability
+
+- The selected syndrome and tier are obvious.
+- Different treatment options are clearly distinguished.
+- Route, dose, units, timing, and maximum dose are easy to locate.
+- Prerequisites and critical restrictions are not hidden.
+- Monitoring and escalation remain accessible.
+- The visual hierarchy does not contradict the clinical workflow.
+
+### Mobile usability
+
+- No horizontal overflow at narrow screen widths.
+- No clipped clinical content.
+- No overlapping navigation.
+- Readable text and comfortable touch targets.
+- No excessive nested scrolling.
+- No critical content hidden merely to reduce clutter.
+- Both themes remain usable.
+
+### Functional reliability
+
+- All existing pathways work.
+- All existing tiers work.
+- Checklists and scoring work.
+- Patient modifiers work.
+- Triage and evidence functions work.
+- Handover content reflects the current selections.
+- Theme switching works.
+- Reset behavior is predictable.
+- The APK download remains functional.
+- No broken controls or unhandled JavaScript errors.
+
+### Clinical content preservation
+
+- No clinical information has been silently altered.
+- No unsupported clinical recommendation has been introduced.
+- No citation has been invented.
+- Potentially unsafe or contradictory source content is flagged separately.
+- All clinically important information remains accessible.
+
+---
+
+# PART 19 — IMPLEMENTATION AND FINAL DELIVERABLES
+
+Implement the changes directly in the existing application.
+
+Do not stop after writing a design plan.
+
+Do not provide only a list of recommendations.
+
+Do not replace the application with a static prototype.
+
+Do not remove existing functionality to simplify the design.
+
+Complete the work in this order:
+
+1. Establish the visual hierarchy and redesign the treatment card.
+2. Implement the expandable rationale system.
+3. Make critical warnings and dosing parameters clear.
+4. Improve syndrome and tier selection.
+5. Improve stabilization, patient modifiers, and bedside scoring.
+6. Improve the monitoring and escalation workflow.
+7. Improve triage, evidence, and handover.
+8. Refine mobile responsiveness, accessibility, and visual consistency.
+9. Test the application and fix regressions.
+
+Deliver the complete updated application or updated project in its existing deployment format.
+
+Provide a concise implementation summary identifying:
+
+- Major UI/UX changes.
+- Important architectural improvements.
+- Any clinical content flagged for review but not changed.
+- Any functionality that could not be verified.
+- Tests actually performed and any remaining limitations.
+
+Do not claim testing that was not performed.
+
+## FINAL DESIGN DIRECTIVE
+
+The final product should feel like a high-quality emergency clinical tool: calm, focused, precise, readable, and reliable.
+
+When a clinician opens a pathway, the interface should immediately communicate the relevant clinical action, the parameters necessary to understand it, and the safety restrictions that must not be missed.
+
+When the clinician wants to understand why a treatment is recommended, the rationale should be available through one clear interaction and presented in a structured, evidence-oriented format.
+
+The goal is not to display less clinical knowledge. The goal is to make the existing knowledge easier to find, understand, and use.
+
+**Continue from the current implementation, make the changes directly, preserve clinical content and working functionality, and optimize the entire experience for rapid, safe, mobile-first use during psychiatric emergencies.**

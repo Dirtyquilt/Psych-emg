@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>STAT-Psych India — Emergency Psychiatric CDSS</title>
+  <meta name="description" content="Evidence-first psychiatric emergency clinical decision support system (CDSS) for casualty and crisis care, grounded in IPS CPG, CMC Vellore TREC trials, and MHCA 2017." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Public Sans', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Public Sans', system-ui, sans-serif; }
+    .font-display { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
+    .tap-target { min-height: 44px; transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1); }
+    .tap-target:active { transform: scale(0.985); }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP HEADER BAR (3-Zone Clinical Architecture) -->
+  <header class="sticky top-0 z-30 h-14 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between gap-6">
+    <a href="#protocols" class="font-display text-base sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white whitespace-nowrap">
+      STAT-Psych India
+    </a>
+
+    <nav aria-label="Primary Navigation" class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+      <button onclick="openModal(null)" class="text-slate-900 dark:text-white underline decoration-teal-600 decoration-2 underline-offset-8 cursor-pointer">
+        Emergency Protocols
+      </button>
+      <button onclick="openModal('triage')" class="hover:text-slate-900 dark:hover:text-white cursor-pointer">
+        Symptom Triage
+      </button>
+      <button onclick="openModal('evidence')" class="hover:text-slate-900 dark:hover:text-white cursor-pointer">
+        Evidence Library
+      </button>
+      <button onclick="openModal('note')" class="hover:text-slate-900 dark:hover:text-white cursor-pointer">
+        Handover Note
+      </button>
+    </nav>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <a href="/stat-psych-india.apk" download="stat-psych-india.apk" class="px-3.5 py-2 text-xs font-semibold text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 rounded-lg transition-colors">
+        Download .APK
+      </a>
+      <button onclick="toggleTheme()" id="themeBtn" class="px-2.5 py-2 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 rounded-lg cursor-pointer">
+        Night Shift
+      </button>
+    </div>
+  </header>
+
+  <!-- PATIENT CONTEXT MODIFIERS BAR -->
+  <section class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex flex-wrap items-center gap-1.5" id="modifiersContainer">
+        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 mr-1">Patient Context:</span>
+      </div>
+      <button onclick="resetPatient()" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 cursor-pointer">
+        Reset Patient
+      </button>
+    </div>
+  </section>
+
+  <!-- MAIN 12-COLUMN MASTER-DETAIL WORKSPACE -->
+  <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-5 pb-24 lg:pb-12 flex-1">
+    <!-- STEP 0: BEDSIDE MEDICAL STABILIZATION GATE -->
+    <div class="mb-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+      <button onclick="toggleStep0()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 text-xs sm:text-sm">
+          <span class="font-semibold text-slate-900 dark:text-white">00. Bedside Medical Stabilization Check</span>
+          <span class="hidden sm:inline text-slate-400">·</span>
+          <span class="text-slate-500 dark:text-slate-400 text-xs">Rule out life-threatening mimics before sedation (Capillary Glucose, SpO2, Vitals, GCS)</span>
+        </div>
+        <span id="step0Status" class="text-xs font-mono font-semibold text-amber-700 dark:text-amber-400 shrink-0">0/4 Verified ▾</span>
+      </button>
+      <div id="step0Body" class="hidden border-t border-slate-200 dark:border-slate-800 p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 bg-slate-50/50 dark:bg-slate-950/40"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <!-- LEFT RAIL (4 Columns): 9 Emergency Syndromes -->
+      <aside class="lg:col-span-4 lg:sticky lg:top-20 space-y-3">
+        <div class="flex items-center justify-between px-0.5">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Emergency Syndromes</h2>
+          <span class="text-xs font-mono text-slate-500 dark:text-slate-400">09 Pathways</span>
+        </div>
+        <div id="syndromeList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-1.5"></div>
+      </aside>
+
+      <!-- RIGHT WORKSPACE (8 Columns): Active Clinical Pathway -->
+      <div class="lg:col-span-8 space-y-5">
+        <!-- Sub-Pathway Selector -->
+        <section id="subPathwaySection" class="space-y-3"></section>
+
+        <!-- Primary Decision Regimen Banner -->
+        <section id="decisionBanner" class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden"></section>
+
+        <!-- Interactive Bedside Calculator -->
+        <section id="calculatorSection" class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5"></section>
+
+        <!-- 4-Stage Clinical Lifecycle Stepper -->
+        <section id="lifecycleSection" class="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800 overflow-hidden"></section>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL OVERLAY (Triage / Evidence / Handover Note) -->
+  <div id="modalOverlay" class="hidden fixed inset-0 z-50 bg-slate-900/50 dark:bg-black/70 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-t-3xl sm:rounded-2xl max-w-2xl w-full max-h-[88vh] flex flex-col shadow-xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <h3 id="modalTitle" class="font-display text-base font-bold text-slate-900 dark:text-white"></h3>
+        <button onclick="openModal(null)" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-semibold cursor-pointer">Close</button>
+      </div>
+      <div id="modalContent" class="p-5 overflow-y-auto text-xs sm:text-sm space-y-3"></div>
+    </div>
+  </div>
+
+  <script>
+    const STEP0_ITEMS = [
+      { id: 'glucose', label: 'Capillary Blood Glucose', detail: 'Exclude hypoglycemia (<70 mg/dL) mimicking acute delirium or agitation.' },
+      { id: 'oxygen', label: 'Pulse Oximetry (SpO2)', detail: 'Exclude hypoxia (<92%) driving restlessness or encephalopathy.' },
+      { id: 'vitals', label: 'Temp, HR, BP & Autonomics', detail: 'T >38.5°C + rigidity/autonomic instability alerts for NMS, SS, or DT.' },
+      { id: 'head', label: 'Head Trauma / Focal Deficit', detail: 'Inspect pupils, GCS, and trauma signs before attributing to primary psychosis.' }
+    ];
+
+    const MODIFIERS = [
+      { id: 'elderly', label: 'Elderly / Frail (>65y)' },
+      { id: 'hepatic', label: 'Hepatic Impairment' },
+      { id: 'renal', label: 'Renal Impairment' },
+      { id: 'cardiac', label: 'Prolonged QTc / Cardiac' },
+      { id: 'alcohol', label: 'CNS Depressant Onboard' },
+      { id: 'pregnancy', label: 'Pregnancy / Peripartum' }
+    ];
+
+    const PATHWAYS = [
+      {
+        id: 'agitation', code: '01', name: 'Acute Agitation', subtitle: 'Rapid Tranquillisation · CMC Vellore TREC',
+        calcTitle: 'Brøset Violence Checklist (BVC — 6 Items)',
+        calcItems: ['Confusion', 'Irritability', 'Boisterousness', 'Verbal Threats', 'Physical Threats', 'Attacking Objects'],
+        tiers: [
+          {
+            id: 'ag_delirium', code: 'Tier 1A', title: 'Altered Sensorium / Delirium Agitation', subtitle: 'Fluctuating attention · Suspected organic etiology',
+            firstLine: 'Verbal de-escalation + Correct hypoxia/hypoglycemia first. If imminent danger: Haloperidol 2.5–5 mg IM/PO (0.5–1 mg in elderly). Avoid benzodiazepines unless alcohol/BZD withdrawal.',
+            onset: '20–30 min (IM)', interval: '30–60 min', maxDose: 'Haloperidol 10–15 mg/24h (Elderly max 3–5 mg/24h)',
+            pearls: ['Obtain baseline ECG for QTc when feasible.', 'Avoid anticholinergics (Promethazine) as they worsen delirium.'],
+            avoid: 'High-dose Lorazepam or Midazolam in non-withdrawal delirium (worsens confusion).'
+          },
+          {
+            id: 'ag_psychosis', code: 'Tier 1B', title: 'Clear Sensorium — Primary Psychosis / Mania', subtitle: 'CMC Vellore TREC Trial Protocol',
+            firstLine: 'Oral first: Olanzapine 10 mg PO/ODT or Risperidone 2 mg + Lorazepam 2 mg PO. Parenteral: Haloperidol 5–10 mg IM + Promethazine 25–50 mg IM OR Olanzapine 10 mg IM alone.',
+            onset: '15–20 min (IM)', interval: '30–60 min', maxDose: 'Olanzapine 20 mg/24h · Haloperidol 20 mg/24h',
+            pearls: ['CMC Vellore TREC trials showed Haloperidol + Promethazine IM prevents acute dystonia and achieves rapid calm.', 'Keep Olanzapine IM and parenteral Benzodiazepines separated by at least 60 minutes.'],
+            avoid: 'Simultaneous IM Olanzapine + IM/IV Lorazepam (risk of fatal cardiorespiratory depression).'
+          }
+        ],
+        steps: [
+          ['Recognition & Verbal De-escalation', 'Maintain 2 arm-lengths distance, unblocked exit, calm tone, offer water/oral medication first.'],
+          ['Targeted Etiological Workup', 'Fingerstick glucose, SpO2, vitals, urine toxicology, baseline ECG (QTc).'],
+          ['Pharmacological Tranquillisation', 'Match regimen to sensorium and etiology (Delirium vs Psychosis vs Stimulant vs Withdrawal).'],
+          ['Post-Sedation Monitoring & MHCA 2017', 'Monitor vitals/sedation q15m x 1h. Document restraint/emergency treatment per MHCA 2017 Sec 94 & 97.']
+        ]
+      },
+      {
+        id: 'catatonia', code: '02', name: 'Acute Catatonia', subtitle: 'Lorazepam Challenge & Malignant Watch',
+        calcTitle: 'Lorazepam Challenge Test (1–2 mg IV/IM)',
+        calcItems: ['Stupor / Immobility', 'Mutism', 'Negativism', 'Posturing / Catalepsy', 'Waxy Flexibility', 'Echolalia / Echopraxia'],
+        tiers: [
+          {
+            id: 'cat_retarded', code: 'Tier 2A', title: 'Retarded / Stuporous Catatonia', subtitle: 'Mutism, immobility, staring, posturing, rigidity',
+            firstLine: 'Diagnostic & Therapeutic Lorazepam Challenge: Record baseline BFCRS, administer Lorazepam 1–2 mg IV/IM, re-score BFCRS at 5–15 min (≥50% reduction confirms catatonia). Maintenance: Lorazepam 6–16 mg/day.',
+            onset: '5–15 min (IV)', interval: 'q6h–q8h maintenance', maxDose: 'Lorazepam 16–24 mg/day in divided doses',
+            pearls: ['Hold all antipsychotics immediately (D2 blockade precipitates NMS/malignant catatonia).', 'Initiate DVT prophylaxis, IV hydration, and nasogastric care if prolonged stupor.'],
+            avoid: 'All Typical & Atypical Antipsychotics during active catatonia.'
+          },
+          {
+            id: 'cat_malignant', code: 'Tier 2B', title: 'Malignant Catatonia (Autonomic Instability)', subtitle: 'Fever + Labile BP + Tachycardia + Rigidity',
+            firstLine: 'Medical ICU admission + High-dose Lorazepam (up to 16–24 mg/day) + Emergency Bilateral ECT (definitive life-saving intervention within 24–48h).',
+            onset: 'Immediate ICU', interval: 'Daily Bilateral ECT', maxDose: 'Lorazepam 24 mg/day + Emergency ECT',
+            pearls: ['Mortality exceeds 10–20% if bilateral ECT is delayed beyond 48 hours.'],
+            avoid: 'Antipsychotics and waiting >48h to arrange ECT.'
+          }
+        ],
+        steps: [
+          ['BFCRS Screening', 'Identify ≥2–3 signs: mutism, stupor, negativism, posturing, waxy flexibility, echophenomena.'],
+          ['Lorazepam Challenge Protocol', 'Give 1–2 mg IV/IM Lorazepam and re-evaluate BFCRS at 15 minutes.'],
+          ['Medical Complications Watch', 'Check CK, renal function, electrolytes, and prevent rhabdomyolysis/DVT/aspiration.'],
+          ['Definitive ECT Escalation', 'Initiate bilateral ECT for malignant catatonia or inadequate Lorazepam response.']
+        ]
+      },
+      {
+        id: 'nms', code: '03', name: 'NMS', subtitle: 'Tetrad · Stop D2 · Bromocriptine / Dantrolene',
+        calcTitle: 'Gurrera Consensus NMS Diagnostic Criteria',
+        calcItems: ['Dopamine Antagonist Exposure (72h)', 'Hyperthermia (>38.0°C x2)', 'Lead-Pipe Muscle Rigidity', 'Altered Mental Status', 'CK Elevation (≥4x ULN)', 'Autonomic Instability (Labile BP/HR)'],
+        tiers: [
+          {
+            id: 'nms_mild', code: 'Tier 3A', title: 'Early / Mild-Moderate NMS', subtitle: 'Rigidity + Fever <39°C · CK mild-moderate',
+            firstLine: 'STOP all antipsychotics immediately (or restart withdrawn dopaminergic agent). Aggressive IV crystalloid hydration + Lorazepam 1–2 mg IV/IM q4–6h + Bromocriptine 2.5 mg PO/NG q8h.',
+            onset: 'Immediate', interval: 'q6–8h', maxDose: 'Bromocriptine 40 mg/day',
+            pearls: ['Monitor serial serum CK, urine output (>1–2 mL/kg/h), and electrolytes q6–12h.'],
+            avoid: 'Antipyretics alone (hyperthermia is muscle-generated, not hypothalamic).'
+          },
+          {
+            id: 'nms_severe', code: 'Tier 3B', title: 'Severe / Fulminant NMS', subtitle: 'Temp ≥39.5°C · CK >5,000 U/L · Rhabdomyolysis',
+            firstLine: 'ICU admission + Dantrolene 1–2.5 mg/kg IV bolus (up to 10 mg/kg/day) + Bromocriptine 2.5–5 mg PO/NG q8h + Evaporative cooling. Bilateral ECT if refractory >48h.',
+            onset: 'Immediate IV', interval: 'q6h Dantrolene', maxDose: 'Dantrolene 10 mg/kg/day',
+            pearls: ['Wait at least 2 weeks after full resolution before cautious low-potency SGA rechallenge.'],
+            avoid: 'Combining Dantrolene with Calcium Channel Blockers (Verapamil/Diltiazem — causes hyperkalemic arrest).'
+          }
+        ],
+        steps: [
+          ['Immediate Causative Drug Withdrawal', 'Halt all FGAs, SGAs, and antiemetics (Metoclopramide/Promethazine).'],
+          ['Resuscitation & Renal Protection', 'High-volume IV fluids to prevent myoglobinuric acute kidney injury.'],
+          ['Specific Pharmacotherapy', 'Lorazepam + Bromocriptine (dopamine agonist) + Dantrolene (skeletal muscle relaxant).'],
+          ['Refractory Escalation & Rechallenge', 'Bilateral ECT for refractory NMS; wait ≥14 days before SGA rechallenge.']
+        ]
+      }
+    ];
+
+    let state = {
+      activePathwayIdx: 0,
+      activeTierIdx: 0,
+      step0Open: false,
+      step0Checked: new Set(),
+      modifiers: new Set(),
+      calcChecked: new Set()
+    };
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      document.getElementById('themeBtn').textContent = isDark ? 'Daylight' : 'Night Shift';
+    }
+
+    function toggleStep0() {
+      state.step0Open = !state.step0Open;
+      document.getElementById('step0Body').classList.toggle('hidden', !state.step0Open);
+    }
+
+    function resetPatient() {
+      state.step0Checked.clear();
+      state.modifiers.clear();
+      state.calcChecked.clear();
+      renderAll();
+    }
+
+    function openModal(type) {
+      const overlay = document.getElementById('modalOverlay');
+      if (!type) { overlay.classList.add('hidden'); return; }
+      overlay.classList.remove('hidden');
+      const title = document.getElementById('modalTitle');
+      const content = document.getElementById('modalContent');
+      const p = PATHWAYS[state.activePathwayIdx];
+      const t = p.tiers[state.activeTierIdx];
+
+      if (type === 'triage') {
+        title.textContent = 'Bedside Symptom Triage & Mimic Differentiator';
+        content.innerHTML = `
+          <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div class="font-semibold">Hyperthermia + Lead-Pipe Rigidity + Hyporeflexia (Slow Onset Days)</div>
+            <p class="text-slate-500">Classic for Neuroleptic Malignant Syndrome (NMS) -> Select Protocol 03.</p>
+          </div>
+          <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div class="font-semibold">Hyperthermia + Lower-Limb Hyperreflexia + Inducible Ankle Clonus (<24h Onset)</div>
+            <p class="text-slate-500">Pathognomonic for Serotonin Syndrome (Hunter Criteria).</p>
+          </div>
+          <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
+            <div class="font-semibold">Mutism + Stupor + Posturing / Waxy Flexibility</div>
+            <p class="text-slate-500">Acute Catatonia -> Perform 1–2 mg IV Lorazepam Challenge (Protocol 02).</p>
+          </div>`;
+      } else if (type === 'evidence') {
+        title.textContent = 'Verified Clinical Evidence Registry (IPS CPG · CMC Vellore · MHCA 2017)';
+        content.innerHTML = `
+          <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="font-mono text-xs text-teal-700 dark:text-teal-400">CMC-TREC · Alexander J et al., Br J Psychiatry (2004)</div>
+            <div class="font-semibold mt-0.5">Rapid Tranquillisation in Psychiatric Emergencies (CMC Vellore Randomized Trial)</div>
+          </div>
+          <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="font-mono text-xs text-teal-700 dark:text-teal-400">IPS-CPG · Indian Psychiatric Society Guidelines</div>
+            <div class="font-semibold mt-0.5">Assessment and Management of Acute Agitation, Catatonia, NMS, and Delirium Tremens</div>
+          </div>
+          <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div class="font-mono text-xs text-teal-700 dark:text-teal-400">MHCA-2017 · Parliament of India (Sections 89, 94, 97, 115)</div>
+            <div class="font-semibold mt-0.5">Emergency Psychiatric Treatment (72h limit), Physical Restraint Logs & Decriminalization of Suicide</div>
+          </div>`;
+      } else if (type === 'note') {
+        title.textContent = 'Structured Casualty Handover & MHCA 2017 Note';
+        content.innerHTML = `<pre class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 font-mono text-xs whitespace-pre-wrap">STAT-PSYCH INDIA — EMERGENCY CASUALTY HANDOVER NOTE
+===================================================
+SYNDROME: ${p.code}. ${p.name}
+SUB-PATHWAY: ${t.code} — ${t.title}
+STEP 0 SAFETY CHECKS: ${state.step0Checked.size}/4 Verified
+PATIENT MODIFIERS: ${Array.from(state.modifiers).join(', ') || 'None'}
+
+PRIMARY REGIMEN:
+${t.firstLine}
+
+DOSING PARAMETERS:
+- Onset: ${t.onset}
+- Repeat Interval: ${t.interval}
+- 24h Ceiling: ${t.maxDose}
+
+CONTRAINDICATION GUARDRAIL:
+${t.avoid}</pre>`;
+      }
+    }
+
+    function renderAll() {
+      // Step 0
+      document.getElementById('step0Status').textContent = `${state.step0Checked.size}/4 Verified ▾`;
+      document.getElementById('step0Body').innerHTML = STEP0_ITEMS.map(item => {
+        const checked = state.step0Checked.has(item.id);
+        return `<button onclick="state.step0Checked.has('${item.id}') ? state.step0Checked.delete('${item.id}') : state.step0Checked.add('${item.id}'); renderAll();"
+          class="p-3 rounded-lg border text-left transition-colors cursor-pointer ${checked ? 'bg-teal-50 dark:bg-teal-950/30 border-teal-600' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'}">
+          <div class="text-xs font-semibold">${checked ? '✓ ' : ''}${item.label}</div>
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">${item.detail}</div>
+        </button>`;
+      }).join('');
+
+      // Modifiers
+      const modContainer = document.getElementById('modifiersContainer');
+      modContainer.innerHTML = `<span class="text-xs font-semibold text-slate-500 dark:text-slate-400 mr-1">Patient Context:</span>` +
+        MODIFIERS.map(m => {
+          const active = state.modifiers.has(m.id);
+          return `<button onclick="state.modifiers.has('${m.id}') ? state.modifiers.delete('${m.id}') : state.modifiers.add('${m.id}'); renderAll();"
+            class="px-2.5 py-1 rounded-lg text-xs font-medium border cursor-pointer ${active ? 'bg-amber-50 dark:bg-amber-950/50 border-amber-500 text-amber-900 dark:text-amber-200 font-semibold' : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300'}">${m.label}</button>`;
+        }).join('');
+
+      // Left Rail Syndromes
+      const p = PATHWAYS[state.activePathwayIdx];
+      document.getElementById('syndromeList').innerHTML = PATHWAYS.map((pw, idx) => {
+        const active = idx === state.activePathwayIdx;
+        return `<button onclick="state.activePathwayIdx=${idx}; state.activeTierIdx=0; state.calcChecked.clear(); renderAll();"
+          class="tap-target p-3 rounded-xl border text-left flex items-center justify-between cursor-pointer ${active ? 'bg-teal-700 text-white border-teal-700 shadow-xs' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'}">
+          <div>
+            <div class="text-xs sm:text-sm font-semibold">${pw.code}. ${pw.name}</div>
+            <div class="text-[11px] ${active ? 'text-teal-100' : 'text-slate-500 dark:text-slate-400'}">${pw.subtitle}</div>
+          </div>
+          <span class="text-xs font-mono">›</span>
+        </button>`;
+      }).join('');
+
+      // Sub-Pathways
+      document.getElementById('subPathwaySection').innerHTML = `
+        <div>
+          <div class="text-xs font-mono text-teal-800 dark:text-teal-400">Protocol ${p.code} · Etiological Stratification</div>
+          <h1 class="font-display text-lg sm:text-xl font-bold">${p.name}</h1>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          ${p.tiers.map((tier, idx) => {
+            const active = idx === state.activeTierIdx;
+            return `<button onclick="state.activeTierIdx=${idx}; renderAll();"
+              class="p-3.5 rounded-xl border text-left cursor-pointer ${active ? 'bg-teal-50/70 dark:bg-slate-800 border-teal-600 ring-1 ring-teal-600/20' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'}">
+              <div class="text-xs font-mono font-semibold text-teal-800 dark:text-teal-400">${tier.code}</div>
+              <div class="text-xs sm:text-sm font-semibold mt-0.5">${tier.title}</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">${tier.subtitle}</div>
+            </button>`;
+          }).join('')}
+        </div>`;
+
+      // Decision Banner
+      const t = p.tiers[state.activeTierIdx];
+      document.getElementById('decisionBanner').innerHTML = `
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 bg-teal-50/40 dark:bg-teal-950/20">
+          <div class="text-xs font-mono uppercase tracking-wider font-semibold text-teal-800 dark:text-teal-400">${t.code} · Primary Bedside Regimen</div>
+          <h2 class="font-display text-base sm:text-lg font-bold mt-0.5">${t.title}</h2>
+        </div>
+        <div class="p-5 space-y-4">
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">First-Line Clinical Action & Dosing</div>
+            <p class="text-sm sm:text-base font-medium leading-relaxed">${t.firstLine}</p>
+          </div>
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+            <span><strong class="text-slate-900 dark:text-slate-200">Onset:</strong> <span class="font-mono">${t.onset}</span></span>
+            <span>·</span>
+            <span><strong class="text-slate-900 dark:text-slate-200">Interval:</strong> <span class="font-mono">${t.interval}</span></span>
+            <span>·</span>
+            <span><strong class="text-slate-900 dark:text-slate-200">Max 24h Ceiling:</strong> <span class="font-mono">${t.maxDose}</span></span>
+          </div>
+          <div class="p-3.5 rounded-xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/60 text-xs text-rose-900 dark:text-rose-200">
+            <strong>Contraindication Guardrail:</strong> ${t.avoid}
+          </div>
+        </div>`;
+
+      // Calculator
+      document.getElementById('calculatorSection').innerHTML = `
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <div class="text-xs font-mono text-teal-800 dark:text-teal-400">Interactive Bedside Scoring</div>
+            <h3 class="font-display text-sm sm:text-base font-bold">${p.calcTitle}</h3>
+          </div>
+          <span class="font-mono text-sm font-bold text-teal-800 dark:text-teal-400">Score: ${state.calcChecked.size}/${p.calcItems.length}</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+          ${p.calcItems.map((item, i) => {
+            const active = state.calcChecked.has(i);
+            return `<button onclick="state.calcChecked.has(${i}) ? state.calcChecked.delete(${i}) : state.calcChecked.add(${i}); renderAll();"
+              class="p-2.5 rounded-lg border text-xs text-left font-medium cursor-pointer ${active ? 'bg-teal-50 dark:bg-teal-950/40 border-teal-600 text-teal-950 dark:text-teal-200' : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'}">
+              ${active ? '✓ ' : '+ '} ${item}
+            </button>`;
+          }).join('')}
+        </div>`;
+
+      // Lifecycle Stepper
+      document.getElementById('lifecycleSection').innerHTML = p.steps.map((s, idx) => `
+        <div class="p-4 sm:p-5 space-y-1">
+          <div class="text-xs font-mono font-semibold text-teal-800 dark:text-teal-400">STAGE 0${idx + 1} · ${s[0]}</div>
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${s[1]}</p>
+        </div>`).join('');
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>

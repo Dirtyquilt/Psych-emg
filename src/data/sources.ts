@@ -1,0 +1,273 @@
+export interface SourceItem {
+  id: string;
+  origin: 'india' | 'intl';
+  badge: string;
+  title: string;
+  authors: string;
+  year: string;
+  identifier: string;
+  url: string;
+  section: string;
+  supports: string;
+  limitations: string;
+  verifiedDate: string;
+  versionStatus: string;
+}
+
+export const SOURCE_REGISTRY: Record<string, SourceItem> = {
+  'IPS-AGIT-2023': {
+    id: 'IPS-AGIT-2023',
+    origin: 'india',
+    badge: 'IPS CPG 2023',
+    title: 'Clinical Practice Guidelines for Assessment and Management of Aggressive and Assaultive Behaviour',
+    authors: 'Gautam S, Gautam M, Yadav KS, Chaudhary J, Jain A (Indian Psychiatric Society)',
+    year: '2023 (Vol 65, Issue 2, pp. 131–139)',
+    identifier: 'DOI: 10.4103/indianjpsychiatry.indianjpsychiatry_518_22 · PMCID: PMC10096211 · PMID: 37063635',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10096211/',
+    section: 'Tables 4, 7, 8, 9, 10, 11 & Section 3 (Pharmacological Management & MHCA Sec 94/97)',
+    supports: 'Stepwise verbal de-escalation -> oral medication first (Lorazepam 1–2mg, Risperidone 1–2mg, Olanzapine 5–10mg) -> IM Rapid Tranquillisation (IM Haloperidol 5–10mg + Promethazine 25–50mg or IM Lorazepam 2–4mg or IM Olanzapine 10mg); mandatory baseline ECG before Haloperidol; avoidance of IM Olanzapine + IM BZD in alcohol use; post-sedation vital monitoring (SpO2 q30m, RR constant, BP/Pulse q15–20m in high risk); MHCA 2017 Sec 94 & Sec 97 compliance.',
+    limitations: 'Guideline synthesis notes scarcity of head-to-head trials across specific medical comorbidities; BVC is primarily validated on inpatient psychiatric wards rather than emergency departments.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current IPS Emergency Psychiatry CPG v2023'
+  },
+  'IPS-AGIT-2022': {
+    id: 'IPS-AGIT-2022',
+    origin: 'india',
+    badge: 'IPS CL-CPG 2022',
+    title: 'Assessment and Management of Agitation in Consultation-Liaison Psychiatry',
+    authors: 'Raveesh BN, Munoli RN, Gowda GS (Indian Psychiatric Society)',
+    year: '2022 (Vol 64, Suppl 2, pp. S484–S498)',
+    identifier: 'DOI: 10.4103/indianjpsychiatry.indianjpsychiatry_22_22 · PMCID: PMC9122159 · PMID: 35602364',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9122159/',
+    section: 'Tables 6, 8, 12, 14 & Appendix 1 (SMART Medical Clearance & Restraint Flowsheet)',
+    supports: 'Etiology-specific drug selection (Lorazepam 1–2mg PO/IM/IV for alcohol/sedative withdrawal or stimulant toxicity; Haloperidol 2–10mg or Olanzapine 5–10mg for CNS depressant intoxication where BZDs are avoided); Lorazepam preferred in hepatic impairment (glucuronidation, no active metabolites); Aripiprazole preferred in QTc prolongation; q15min x 1h then q1h restraint observation chart.',
+    limitations: 'Primarily narrative consensus adapted for Indian Consultation-Liaison settings; IV haloperidol requires continuous cardiac monitoring.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current IPS CL Psychiatry CPG v2022'
+  },
+  'TREC-VELLORE-2004': {
+    id: 'TREC-VELLORE-2004',
+    origin: 'india',
+    badge: 'CMC Vellore RCT 2004',
+    title: 'Rapid tranquillisation of violent or agitated patients in a psychiatric emergency setting: Pragmatic randomised trial of intramuscular lorazepam v. haloperidol plus promethazine (TREC-India I)',
+    authors: 'Alexander J, Tharyan P, Adams C, John T, Mol C, Philip J (CMC Vellore, Tamil Nadu, India)',
+    year: '2004 (Br J Psychiatry, Vol 185, Issue 1, pp. 63–69)',
+    identifier: 'DOI: 10.1192/bjp.185.1.63 · PMID: 15231557',
+    url: 'https://www.cambridge.org/core/journals/the-british-journal-of-psychiatry/article/rapid-tranquillisation-of-violent-or-agitated-patients-in-a-psychiatric-emergency-setting/4713460CAD236BC7F1B4332CE65FA494',
+    section: 'Primary & Secondary Outcomes (n = 200 Indian emergency psychiatric patients, 100 per arm)',
+    supports: 'Compared IM Haloperidol (10 mg) + Promethazine (25–50 mg) vs IM Lorazepam (4 mg): at 4h (primary outcome), 96% in BOTH arms were tranquil or asleep, but Haloperidol+Promethazine produced significantly more sleep at 4h (76% vs 45%; RR 1.7, NNT 3.2), faster tranquillisation/asleep at 15, 30, 60, and 120 min (97% vs 88% tranquil/asleep at 2h, p=0.03; mean time 29.7 vs 47.8 min), and zero acute dystonic reactions in either arm (Lorazepam arm had 4% moderate respiratory difficulty/bronchial asthma exacerbation and 3% nausea/dizziness).',
+    limitations: 'Single-center pragmatic RCT at CMC Vellore using a 4 mg IM Lorazepam comparator; primary advantage of Haloperidol+Promethazine over 4 mg Lorazepam was faster onset and higher proportion asleep rather than 4h combined tranquil/asleep rate.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Landmark Indian RCT (Level Ib)'
+  },
+  'TREC-INDIA-II-2007': {
+    id: 'TREC-INDIA-II-2007',
+    origin: 'india',
+    badge: 'CMC Vellore RCT 2007',
+    title: 'Rapid tranquillisation in psychiatric emergency settings in India: pragmatic randomised controlled trial of intramuscular olanzapine versus intramuscular haloperidol plus promethazine (TREC-India II)',
+    authors: 'Raveendran NS, Tharyan P, Alexander J, Adams CE (TREC-India II Collaborative Group, CMC Vellore)',
+    year: '2007 (BMJ, Vol 335, Issue 7625, p. 865)',
+    identifier: 'DOI: 10.1136/bmj.39341.608519.BE · PMCID: PMC2043469 · PMID: 17954514',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2043469/',
+    section: 'Results & Tables 2–3 (n = 300 agitated patients at CMC Vellore, 150 per arm)',
+    supports: 'Both IM Olanzapine (10 mg) and IM Haloperidol (10 mg) + Promethazine (25–50 mg) achieved rapid calming (87% vs 91% tranquil/asleep at 15 min; 96% vs 97% at 4h), but IM Haloperidol+Promethazine produced more sleep across all timepoints and required significantly fewer repeat drugs (21% vs 43%; RR 2.07, NNT 5) and fewer repeat psychiatrist call-backs over 4 hours (15% vs 33%) than IM Olanzapine. Zero patients in either arm (0/150 vs 0/150) developed acute dystonia.',
+    limitations: 'Excluded patients with severe medical instability; IM Olanzapine is costlier and shorter-acting than Haloperidol + Promethazine.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Landmark Indian RCT (Level Ib)'
+  },
+  'TREC-RIO-2007': {
+    id: 'TREC-RIO-2007',
+    origin: 'intl',
+    badge: 'TREC-Rio II BMJ 2007',
+    title: 'Rapid tranquillisation in psychiatric emergency settings in Brazil: pragmatic randomised controlled trial of intramuscular haloperidol versus intramuscular haloperidol plus promethazine',
+    authors: 'Huf G, Coutinho ESF, Adams CE (TREC Collaborative Group, Rio de Janeiro)',
+    year: '2007 (BMJ, Vol 335, Issue 7625, p. 869)',
+    identifier: 'DOI: 10.1136/bmj.39339.448819.AE · PMCID: PMC2043463 · PMID: 17954515',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2043463/',
+    section: 'Primary Outcomes & Adverse Events (n = 316 emergency psychiatric patients: 160 Haloperidol+Promethazine vs 156 Haloperidol alone)',
+    supports: 'Directly proved why IM Haloperidol monotherapy is hazardous in emergency psychiatry: IM Haloperidol (5–10 mg) + Promethazine (25–50 mg) achieved significantly higher tranquillisation/sleep at 20 min (72.3% vs 55.2%; RR 1.30, NNT 6, p=0.002), while the trial was halted early by the steering committee because 10 cases of acute dystonia occurred—ALL 10 in the Haloperidol-alone arm (6.4% vs 0%).',
+    limitations: 'Conducted in Brazilian psychiatric emergency rooms; directly complements TREC-Vellore trials.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Landmark Companion RCT (Level Ib)'
+  },
+  'IPS-TOX-2022': {
+    id: 'IPS-TOX-2022',
+    origin: 'india',
+    badge: 'IPS CPG 2022',
+    title: 'Clinical Practice Guidelines for Management of Medical Emergencies Associated with Psychotropic Medications',
+    authors: 'Grover S, Sarkar S, Avasthi A (PGIMER Chandigarh & AIIMS New Delhi, Indian Psychiatric Society)',
+    year: '2022 (Indian J Psychiatry, Vol 64, Suppl 2, pp. S236–S251)',
+    identifier: 'DOI: 10.4103/indianjpsychiatry.indianjpsychiatry_1013_21 · PMCID: PMC9122152 · PMID: 35602372',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9122152/',
+    section: 'Tables 4, 6, 13, 14, 15, 16, 18, 26, 27 (Dystonia, Akathisia, NMS, Serotonin Syndrome, Anticholinergic, Lithium/Valproate/TCA/BZD Overdose)',
+    supports: 'Stepwise management of Acute Dystonia (Promethazine 25–50mg IM, Diphenhydramine 25–50mg IM/IV, Biperiden 5mg IM/IV, or Benztropine 1–2mg IM/IV; IV Lorazepam 1–2mg or Diazepam 2–5mg for acute laryngeal dystonia/stridor; continue oral anticholinergic 4–7 days); Akathisia (Propranolol 40–80mg/d first-line, Mirtazapine 15mg second-line; Vitamin B6 200–600mg/d); NMS (Stop dopamine blocker, ICU hydration, Lorazepam 1–2mg, Bromocriptine 10–40mg/d divided PO/NGT, Dantrolene 1–2.5mg/kg bolus then 1mg/kg q6h up to 10mg/kg/d, Amantadine 100–300mg BD, wait ≥2 weeks before antipsychotic rechallenge); Serotonin Syndrome (Stop serotonergics, Lorazepam, Cyproheptadine 12mg PO/NGT loading then 2mg q2h); Lithium/Valproate/TCA overdose protocols.',
+    limitations: 'Pharmacotherapy for NMS and Serotonin Syndrome is derived from case series and expert consensus rather than placebo-controlled RCTs.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current IPS Psychotropic Emergencies CPG v2022'
+  },
+  'IPS-SUIC-2023': {
+    id: 'IPS-SUIC-2023',
+    origin: 'india',
+    badge: 'IPS CPG 2023',
+    title: 'Clinical Practice Guidelines for Management of Suicidal Behaviour',
+    authors: 'Sarkhel S, Vijayakumar V, Vijayakumar L (IPGME&R Kolkata & VHS/Sneha Chennai, Indian Psychiatric Society)',
+    year: '2023 (Indian J Psychiatry, Vol 65, Issue 2, pp. 124–130)',
+    identifier: 'DOI: 10.4103/indianjpsychiatry.indianjpsychiatry_497_22 · PMCID: PMC10096207 · PMID: 37063624',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10096207/',
+    section: 'Tables 5, 8, 9, 10 & Medicolegal Aspects (MHCA 2017 Section 115)',
+    supports: '3-Tier Risk Stratification (High/Moderate/Low) based on clinical formulation of intent, lethality of attempt, plan, and support; mandatory hospitalization criteria; rejection of "No-Suicide Contracts" (unsupported by evidence, false sense of security); Stanley-Brown 6-step Safety Plan Intervention; Government of India Tele-MANAS 24x7 Helpline (14416 / 1800-891-4416); WHO Brief Intervention & Contact (BIC) schedule (1, 2, 4, 7, 11 wk & 4, 6, 12, 18 mo); ECT for acute suicidal depression; MHCA 2017 Sec 115 overriding former IPC Sec 309 (omitted under BNS 2023).',
+    limitations: 'Ketamine IV (0.5 mg/kg) noted as rapid short-term anti-suicidal option in trials but explicitly flagged as off-label with short-lived benefit; no single rating scale predicts suicide without comprehensive clinical formulation.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current IPS Suicidal Behaviour CPG v2023'
+  },
+  'IPS-SUBST-2023': {
+    id: 'IPS-SUBST-2023',
+    origin: 'india',
+    badge: 'IPS CPG 2023',
+    title: 'Clinical Practice Guidelines for Assessment and Management of Patients with Substance Intoxication Presenting to the Emergency Department',
+    authors: 'Sarkar S, Bhatia G, Dhawan A (NDDTC AIIMS New Delhi & AIIMS Rajkot, Indian Psychiatric Society)',
+    year: '2023 (Indian J Psychiatry, Vol 65, Issue 2, pp. 196–211)',
+    identifier: 'DOI: 10.4103/indianjpsychiatry.indianjpsychiatry_490_22 · PMCID: PMC10096213 · PMID: 37063633',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10096213/',
+    section: 'Tables 1, 2, Figure 3 & Alcohol/Opioid/Cannabis/Stimulant Sections',
+    supports: 'Mandatory parenteral Thiamine (at least 250–500 mg IM/IV daily for 3–5 days) BEFORE or concurrently with IV Glucose/Dextrose to prevent precipitating acute Wernicke encephalopathy (never delay dextrose if hypoglycemic); rule out occult head injury (subdural hematoma) and methanol poisoning (ophthalmoscopy for papilledema); ECG for Holiday Heart arrhythmias; Haloperidol 5mg + Promethazine 25–50mg IM for severe combative alcohol intoxication; Naloxone reversal in opioid overdose.',
+    limitations: 'Focuses primarily on acute intoxication in Indian EDs; refers to companion IPS guidelines for prolonged withdrawal maintenance.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current IPS Substance Emergency CPG v2023'
+  },
+  'IPS-GERI-2023': {
+    id: 'IPS-GERI-2023',
+    origin: 'india',
+    badge: 'IPS CPG 2023',
+    title: 'Clinical Practice Guidelines for the Assessment and Management of Elderly Presenting with Psychiatric Emergencies',
+    authors: 'Grover S, Avasthi A (PGIMER Chandigarh, Indian Psychiatric Society)',
+    year: '2023 (Indian J Psychiatry, Vol 65, Issue 2, pp. 140–158)',
+    identifier: 'DOI: 10.4103/indianjpsychiatry.indianjpsychiatry_487_22 · PMCID: PMC10096200 · PMID: 37063626',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10096200/',
+    section: 'Tables 4, 8, 12, 13 (Toxidrome Matrix, Delirium Tremens Thiamine/BZD Protocol, Lorazepam Challenge Test)',
+    supports: 'Delirium Tremens regimen: Thiamine 500 mg IV TID for 2–3 days (diluted in 50–100 mL NS over 30 min) BEFORE or together with glucose, then 250 mg IV OD for 3–5 days; correct hypomagnesemia with MgSO4 (thiamine is ineffective without Mg2+); symptom-triggered Lorazepam 2 mg or Diazepam 10 mg IV/PO (prefer Lorazepam in hepatic dysfunction; Day-1 total dose becomes Day-2 standing dose then taper over 3–4 days); Catatonia Lorazepam Challenge protocol (Baseline BFCRS -> 1–2 mg IV Lorazepam -> reassess at 5 min [15 min IM / 30 min PO] -> ≥50% BFCRS reduction = positive).',
+    limitations: 'Designed with geriatric vulnerability in mind; adult emergency dosing cross-referenced in Table 13.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current IPS Emergency CPG v2023'
+  },
+  'IPS-DELIR-2018': {
+    id: 'IPS-DELIR-2018',
+    origin: 'india',
+    badge: 'IPS CPG 2018',
+    title: 'Clinical Practice Guidelines for Management of Delirium in Elderly',
+    authors: 'Grover S, Avasthi A (PGIMER Chandigarh, Indian Psychiatric Society)',
+    year: '2018 (Indian J Psychiatry, Vol 60, Suppl 3, pp. S329–S340)',
+    identifier: 'DOI: 10.4103/0019-5545.224473 · PMCID: PMC5840908 · PMID: 29535468',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5840908/',
+    section: 'Tables 3, 6, 9, 11, 12 & Figure 3 (CAM, DRS-R-98, Non-Alcohol vs Alcohol Delirium)',
+    supports: 'Primary medical/surgical team ownership for altered sensorium; CAM / DRS-R-98 assessment; non-pharmacological reorientation & anticholinergic deprescribing first; low-dose Haloperidol (0.25–0.5 mg q4h in elderly; 0.5–2 mg in adults) or Risperidone/Olanzapine/Quetiapine (prefer Quetiapine in Parkinsonism/Lewy Body Dementia) ONLY for severe agitation/perceptual distress with baseline & serial QTc monitoring.',
+    limitations: 'Notes that double-blind placebo-controlled trials of antipsychotics in non-alcohol delirium are small and show mixed impact on delirium duration.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Active IPS Delirium CPG v2018 (Reaffirmed 2023)'
+  },
+  'MHCA-2017': {
+    id: 'MHCA-2017',
+    origin: 'india',
+    badge: 'MHCA 2017 (India Law)',
+    title: 'The Mental Healthcare Act, 2017 (Act No. 10 of 2017, Government of India), BNS 2023 & IPS Restraint Guidelines',
+    authors: 'Parliament of India / Ministry of Law & Justice; Raveesh BN & Lepping P (IPS 2019 Restraint Guidelines)',
+    year: '2017 (Enacted April 7, 2017) & 2019 (Indian J Psychiatry 61(Suppl 4):S698–S705)',
+    identifier: 'PMCID: PMC6482694 (Restraint CPG) · PMCID: PMC9122135 (MHCA Service Implementation)',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6482694/',
+    section: 'MHCA Chapter XII: Section 86 (Independent), Section 89 (Supported Admission), Section 94 (Emergency Treatment), Section 95 (Prohibited Procedures), Section 97 (Restraint), Section 115 (Suicide)',
+    supports: '1) Sec 94(1)–(4): Any Registered Medical Practitioner may give emergency treatment to prevent death/irreversible harm, serious self/other harm, or serious property damage (with Nominated Representative [NR] consent where available), strictly limited to 72 hours OR until the person has been assessed at a mental health establishment, whichever is earlier (7 days only in a declared disaster/emergency); Sec 94(3) prohibits ECT under emergency treatment. 2) Sec 95(1)(a): Unmodified ECT (without muscle relaxants and anaesthesia) is strictly prohibited; Sec 95(1)(b) & 95(2) prohibit ECT for minors unless certified by the psychiatrist in charge with guardian informed consent AND prior Mental Health Review Board (MHRB) approval. 3) Sec 97: Seclusion is ILLEGAL in India; physical restraint requires psychiatrist authorization, supine positioning, q15min nursing checks, hourly doctor review, mandatory NR notification within 24 hours (Sec 97(5)), and monthly MHRB reporting (Sec 97(6)). 4) Sec 89: Supported admission up to 30 days requires 2 independent assessments (1 psychiatrist + 1 MHP/medical practitioner). 5) Sec 115: Person attempting suicide is presumed to have severe stress and shall not be tried or punished (general suicide attempt offence omitted under BNS 2023).',
+    limitations: 'Statutory Indian law; hospital-level documentation forms must align with State Mental Health Rules.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Active Statutory Law of India'
+  },
+  'NICE-NG10-2015': {
+    id: 'NICE-NG10-2015',
+    origin: 'intl',
+    badge: 'NICE NG10',
+    title: 'Violence and aggression: short-term management in mental health, health and community settings (NICE Guideline NG10)',
+    authors: 'National Institute for Health and Care Excellence (UK)',
+    year: '2015 (Surveillance reaffirmed 2019/2025)',
+    identifier: 'NICE Reference: NG10 · PMID: 26180881',
+    url: 'https://www.nice.org.uk/guidance/ng10/chapter/recommendations',
+    section: 'Section 1.4 & 1.5 (Restrictive Interventions & Rapid Tranquillisation)',
+    supports: 'Use IM Lorazepam alone first if no baseline ECG is available or if patient is antipsychotic-naive/has cardiovascular disease; if partial response to IM Haloperidol, consider adding IM Promethazine; never use IV route as first-line rapid tranquillisation unless immediate resuscitation facilities exist; monitor BP, pulse, temperature, respiratory rate, hydration, and level of consciousness at least every 15 minutes for 1 hour after parenteral rapid tranquillisation.',
+    limitations: 'UK availability of IM Promethazine differed historically from India; in Indian EDs, IM Haloperidol + Promethazine is commonly co-administered per TREC-Vellore trials once cardiac red flags are excluded.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current NICE Guideline NG10'
+  },
+  'BAP-CAT-2023': {
+    id: 'BAP-CAT-2023',
+    origin: 'intl',
+    badge: 'BAP Catatonia 2023',
+    title: 'Evidence-based consensus guidelines for the management of catatonia: Recommendations from the British Association for Psychopharmacology',
+    authors: 'Rogers JP, Oldham MA, Fricchione G, Northoff G, Wilson JE, Grover S (PGIMER India), et al.',
+    year: '2023 (J Psychopharmacol, Vol 37, Issue 4, pp. 327–369)',
+    identifier: 'DOI: 10.1177/02698811231158232 · PMCID: PMC10101189 · PMID: 37039129',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10101189/',
+    section: 'Tables 3, 7, 9, 10 & Treatment Recommendations (pp. 338–355)',
+    supports: 'Diagnose Catatonia with ≥3 DSM-5-TR/ICD-11 signs and rate with Bush-Francis Catatonia Rating Scale (BFCRS; ≥2 on 14-item screen). Lorazepam Challenge Test: Score baseline BFCRS -> Give Lorazepam 1–2 mg IV (reassess at 5 min), 1–2 mg IM (reassess at 15 min), or 2 mg PO (reassess at 30 min) -> ≥50% reduction in BFCRS confirms positive response. Titrate Lorazepam in divided doses up to 8–16 mg/day (max 24 mg/day). Urgent Bilateral ECT is first-line alongside Lorazepam in Malignant Catatonia or Lorazepam non-response. Clozapine withdrawal catatonia -> restart Clozapine; NMDA encephalitis -> avoid high-potency D2 blockers.',
+    limitations: 'Most recommendations are Grade B/C/D/S because placebo-controlled RCTs in acute catatonia are ethically and practically scarce.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current BAP Consensus Guideline v2023'
+  },
+  'EXTRIP-LI-2015': {
+    id: 'EXTRIP-LI-2015',
+    origin: 'intl',
+    badge: 'EXTRIP Lithium 2015',
+    title: 'Extracorporeal Treatment for Lithium Poisoning: Systematic Review and Recommendations from the EXTRIP Workgroup',
+    authors: 'Decker BS, Goldfarb DS, Dargan PI, Bhalla A (PGIMER India / ISCCM / API), Ghannoum M, et al.',
+    year: '2015 (Clin J Am Soc Nephrol, Vol 10, Issue 5, pp. 875–887)',
+    identifier: 'DOI: 10.2215/CJN.10021014 · PMCID: PMC4422246 · PMID: 25583292',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4422246/',
+    section: 'Summary of Recommendations (1D & 2D), Tables 2, 3, 5',
+    supports: 'Lithium is highly dialyzable (Level A). Intermittent Hemodialysis (HD) is the preferred modality (1D). HD is RECOMMENDED (1D): 1) If kidney function is impaired AND [Li+] >4.0 mEq/L; OR 2) In the presence of decreased level of consciousness, seizures, or life-threatening dysrhythmias IRRESPECTIVE of serum [Li+]. HD is SUGGESTED (2D): 1) If [Li+] >5.0 mEq/L; 2) If significant confusion is present; OR 3) If expected time to reduce [Li+] to <1.0 mEq/L is >36 hours (IPS 2022 also advises considering HD at >2.5 mEq/L in chronic toxicity or renal impairment). Continue HD until [Li+] <1.0 mEq/L or clinical improvement (minimum 6h if levels unavailable), then monitor serial [Li+] over 12h for rebound. Activated charcoal does NOT bind lithium.',
+    limitations: 'Evidence quality is graded 1D/2D because clinical literature consists of observational studies/case series without randomized trials.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current EXTRIP International Consensus'
+  },
+  'HUNTER-SS-2003': {
+    id: 'HUNTER-SS-2003',
+    origin: 'intl',
+    badge: 'Hunter Criteria 2003',
+    title: 'The Hunter Serotonin Toxicity Criteria: simple and accurate diagnostic decision rules for serotonin toxicity',
+    authors: 'Dunkley EJC, Isbister GK, Sibbritt D, Dawson AH, Whyte IM',
+    year: '2003 (QJM: An International Journal of Medicine, Vol 96, Issue 9, pp. 635–642)',
+    identifier: 'DOI: 10.1093/qjmed/hcg109 · PMID: 12925718',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/12925718/',
+    section: 'Hunter Decision Rules (Derived in n=473 SSRI overdoses, validated in n=2222 poisonings)',
+    supports: 'In the presence of a serotonergic agent (mandatory prerequisite), Serotonin Toxicity is diagnosed (84% sensitivity, 97% specificity vs gold-standard toxicologist diagnosis) if ANY ONE of 5 rules is met: 1) Spontaneous clonus; 2) Inducible clonus PLUS agitation OR diaphoresis; 3) Ocular clonus PLUS agitation OR diaphoresis; 4) Tremor PLUS hyperreflexia; 5) Hypertonia PLUS temperature >38°C PLUS ocular clonus OR inducible clonus.',
+    limitations: 'Derived and validated in serotonergic overdose cohorts; in severe rigidity (temp >40°C), extreme truncal muscle rigidity can mask peripheral clonus/hyperreflexia.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Validated Diagnostic Decision Rule'
+  },
+  'CHIEW-SS-2024': {
+    id: 'CHIEW-SS-2024',
+    origin: 'intl',
+    badge: 'Br J Clin Pharm 2024',
+    title: 'Management of serotonin syndrome (toxicity)',
+    authors: 'Chiew AL, Isbister GK (NSW Poisons Information Centre & University of Newcastle, Australia)',
+    year: '2024 / 2025 Issue (Br J Clin Pharmacol, Vol 91, Issue 3, pp. 654–661)',
+    identifier: 'DOI: 10.1111/bcp.16152 · PMCID: PMC11862804 · PMID: 38926083',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11862804/',
+    section: 'Sections 6, 7 & 8 (Table 1 Modified Diagnostic Criteria, Figure 1 Severity-Based Management & Cyproheptadine Critique)',
+    supports: 'Cornerstone of management is immediate cessation of serotonergic drugs, IV fluid resuscitation, and titrated Benzodiazepines (Diazepam/Lorazepam). In severe toxicity (Temp >38.5–39°C with truncal rigidity), life-saving intervention is immediate active external cooling, endotracheal intubation, and non-depolarizing neuromuscular paralysis (Vecuronium/Rocuronium; AVOID Succinylcholine). Explicitly documents conflicting/insufficient evidence for Cyproheptadine (retrospective studies show no mortality benefit over supportive care, though 12mg PO/NGT may offer symptomatic relief).',
+    limitations: 'Highlights that 5-HT2A antagonists lack human RCT evidence and must never delay intubation/cooling in severe hyperthermic patients.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Current Clinical Pharmacology Review v2024'
+  },
+  'GURRERA-NMS-2011': {
+    id: 'GURRERA-NMS-2011',
+    origin: 'intl',
+    badge: 'NMS Consensus 2011',
+    title: 'An International Consensus Study of Neuroleptic Malignant Syndrome Diagnostic Criteria Using the Delphi Method',
+    authors: 'Gurrera RJ, Caroff SN, Cohen A, et al. (J Clin Psychiatry 2011 & J Clin Psychopharmacol 2017)',
+    year: '2011 / 2017 / 2019',
+    identifier: 'DOI: 10.4088/JCP.10m06438 · PMID: 21733489 · PMCID: PMC6386430',
+    url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6386430/',
+    section: 'Gurrera Delphi Weighted Diagnostic Criteria (Threshold ≥74/100) & Severity-Staged NMS Pharmacotherapy Table 1',
+    supports: 'International Consensus NMS Diagnostic Score (100 points total, validated cutoff ≥74): Dopamine antagonist exposure or agonist withdrawal within 72h (20 pts), Hyperthermia >38.0°C (18 pts), Rigidity (17 pts), Mental status alteration (13 pts), CPK elevation ≥4x ULN (10 pts), Sympathetic nervous system lability (10 pts), Hypermetabolism (5 pts), Negative workup for mimics (7 pts). Severity-staged therapy: Stop neuroleptic + ICU IV hydration + Lorazepam 1–2mg (Mild) + Bromocriptine 2.5–5mg q8h or Amantadine 100–200mg BD (Moderate) + Dantrolene 1–2.5mg/kg bolus then 1mg/kg q6h for extreme rigidity/hyperthermia (Severe). Continue Bromocriptine/Dantrolene for ≥10 days then slow taper to prevent relapse; bilateral ECT for refractory NMS.',
+    limitations: 'No head-to-head RCTs exist for NMS pharmacotherapy; retrospective case-series show mixed mortality data for Dantrolene vs Bromocriptine, so aggressive ICU supportive care remains paramount.',
+    verifiedDate: '2026-10-20',
+    versionStatus: 'Validated Consensus Criteria & Pharmacotherapy Review'
+  }
+};

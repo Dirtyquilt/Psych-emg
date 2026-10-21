@@ -1,0 +1,8 @@
+{
+  "name": "Remix STAT-Psych India — Emergency Psychiatric CDSS",
+  "description": "Modern, evidence-first psychiatric emergency clinical decision support system for casualty and crisis care, based on IPS CPG, CMC Vellore trials, and MHCA 2017.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

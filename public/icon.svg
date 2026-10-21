@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#09131f" />
+      <stop offset="100%" stop-color="#042f2e" />
+    </linearGradient>
+    <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle with safe zone -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="none" stroke="#14b8a6" stroke-opacity="0.3" stroke-width="4" />
+
+  <!-- Medical Cross Glow Backdrop -->
+  <g opacity="0.12">
+    <rect x="216" y="96" width="80" height="320" rx="24" fill="#2dd4bf" />
+    <rect x="96" y="216" width="320" height="80" rx="24" fill="#2dd4bf" />
+  </g>
+
+  <!-- Pulse EKG Trace behind lightning -->
+  <path d="M 80 256 L 160 256 L 195 190 L 230 330 L 270 160 L 305 310 L 335 256 L 432 256" 
+        fill="none" 
+        stroke="#2dd4bf" 
+        stroke-width="12" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        opacity="0.45" />
+
+  <!-- STAT Lightning Bolt Core -->
+  <path d="M 288 88 L 176 264 L 256 264 L 224 424 L 352 232 L 272 232 Z" 
+        fill="url(#boltGrad)" 
+        filter="url(#glow)" />
+        
+  <!-- Caduceus / Stethoscope Dot Badge -->
+  <circle cx="390" cy="120" r="18" fill="#38bdf8" />
+</svg>
