@@ -474,6 +474,14 @@ export default function App() {
               17 Primary Sources
             </button>
             <span aria-hidden="true">·</span>
+            <a
+              href="/AI_CONTEXT.md"
+              download="STAT-Psych-India-AI_CONTEXT.md"
+              className="text-teal-700 dark:text-teal-400 hover:underline cursor-pointer"
+            >
+              Download AI_CONTEXT.md
+            </a>
+            <span aria-hidden="true">·</span>
             <button
               type="button"
               onClick={() => setIsAndroidInstallOpen(true)}

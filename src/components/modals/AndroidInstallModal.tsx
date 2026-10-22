@@ -140,16 +140,20 @@ export const AndroidInstallModal: React.FC<AndroidInstallModalProps> = ({
 
             <div className="royale-card rounded-2xl bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800 font-mono text-xs">
               <div className="px-3.5 py-2.5 flex items-center justify-between gap-2">
-                <span className="text-slate-900 dark:text-slate-100 font-bold">/public/stat-psych-india.apk</span>
-                <span className="text-slate-500 dark:text-slate-400">Served Direct APK (v3.0.0)</span>
-              </div>
-              <div className="px-3.5 py-2.5 flex items-center justify-between gap-2">
                 <span className="text-slate-900 dark:text-slate-100 font-bold">/stat-psych-india.apk</span>
-                <span className="text-slate-500 dark:text-slate-400">Root Signed APK Binary</span>
+                <span className="text-slate-500 dark:text-slate-400">Root Signed APK Binary (v3.0.0)</span>
               </div>
               <div className="px-3.5 py-2.5 flex items-center justify-between gap-2">
-                <span className="text-slate-900 dark:text-slate-100 font-bold">/releases/stat-psych-india-v2.0.0.apk</span>
-                <span className="text-slate-500 dark:text-slate-400">Release Archive APK</span>
+                <span className="text-slate-900 dark:text-slate-100 font-bold">/releases/stat-psych-india-v3.0.0.apk</span>
+                <span className="text-slate-500 dark:text-slate-400">GitHub Release APK (v3.0.0)</span>
+              </div>
+              <div className="px-3.5 py-2.5 flex items-center justify-between gap-2">
+                <span className="text-slate-900 dark:text-slate-100 font-bold">/public/stat-psych-india.apk</span>
+                <span className="text-slate-500 dark:text-slate-400">Served Direct APK</span>
+              </div>
+              <div className="px-3.5 py-2.5 flex items-center justify-between gap-2">
+                <span className="text-slate-900 dark:text-slate-100 font-bold">/.github/workflows/build-android-apk.yml</span>
+                <span className="text-slate-500 dark:text-slate-400">GitHub Releases CI/CD</span>
               </div>
             </div>
 
@@ -207,6 +211,26 @@ export const AndroidInstallModal: React.FC<AndroidInstallModalProps> = ({
                 In <strong>Android Chrome</strong>, tap the top-right browser menu and select <strong>Install app</strong>.
               </div>
             )}
+          </div>
+
+          {/* Option 4: Download Single-File AI Agent Context Pack */}
+          <div className="p-5 space-y-3 bg-slate-50/80 dark:bg-slate-950/40">
+            <div className="space-y-1">
+              <div className="font-display text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white">
+                04. AI Agent Context Bundle (AI_CONTEXT.md)
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Download a single, comprehensive Markdown file containing the full system architecture, file tree, clinical pathways, calculators, and source code to share with any AI agent.
+              </p>
+            </div>
+            <a
+              href="/AI_CONTEXT.md"
+              download="STAT-Psych-India-AI_CONTEXT.md"
+              className="royale-btn w-full py-3 px-4 rounded-2xl bg-white dark:bg-slate-800 hover:bg-teal-50 dark:hover:bg-slate-700 border-slate-300 dark:border-slate-600 text-teal-800 dark:text-teal-300 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Download className="w-4 h-4 stroke-[2.5] shrink-0" />
+              <span>Download AI_CONTEXT.md (Full App Context for AI Agents)</span>
+            </a>
           </div>
         </div>
       </div>

@@ -131,10 +131,11 @@ apksigner sign \
   "$WORK_DIR/build/aligned.apk"
 
 cp public/stat-psych-india.apk stat-psych-india.apk
+cp public/stat-psych-india.apk releases/stat-psych-india-v3.0.0.apk
 cp public/stat-psych-india.apk releases/stat-psych-india-v2.0.0.apk
 cp public/stat-psych-india.apk releases/stat-psych-india-v1.0.0.apk
 cp public/stat-psych-india.apk dist/stat-psych-india.apk
 
 apksigner verify --verbose public/stat-psych-india.apk
 echo "==> Successfully built and signed:"
-ls -lh stat-psych-india.apk releases/stat-psych-india-v2.0.0.apk releases/stat-psych-india-v1.0.0.apk public/stat-psych-india.apk
+ls -lh stat-psych-india.apk releases/stat-psych-india-v3.0.0.apk releases/stat-psych-india-v2.0.0.apk releases/stat-psych-india-v1.0.0.apk public/stat-psych-india.apk
